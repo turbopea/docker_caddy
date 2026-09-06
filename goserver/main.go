@@ -4,14 +4,21 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", handlePage)
-	const port = "8010"
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	port := os.Getenv("PORT")
 	srv := http.Server{
 		Handler:      mux,
 		Addr:         ":" + port,
@@ -19,7 +26,7 @@ func main() {
 		ReadTimeout:  30 * time.Second,
 	}
 	fmt.Println("Server starts on port:", port)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	log.Fatal(err)
 }
 
