@@ -6,18 +6,16 @@ import (
 	"net/http"
 	"os"
 	"time"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", handlePage)
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	//err := godotenv.Load()
+	//if err != nil {
+	//log.Fatal("Error loading .env file")
+	//}
 	port := os.Getenv("PORT")
 	srv := http.Server{
 		Handler:      mux,
@@ -26,7 +24,7 @@ func main() {
 		ReadTimeout:  30 * time.Second,
 	}
 	fmt.Println("Server starts on port:", port)
-	err = srv.ListenAndServe()
+	err := srv.ListenAndServe()
 	log.Fatal(err)
 }
 
@@ -36,7 +34,7 @@ func handlePage(w http.ResponseWriter, r *http.Request) {
 	const page = `<html>
 <head></head>
 <body>
-	<p> Hello from Docker! I'm a Go server. </p>
+	<p> Hi Docker, I pushed a new version. </p>
 </body>
 </html>
 `
